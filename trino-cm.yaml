@@ -1,0 +1,73 @@
+data:
+  config.properties: |
+    coordinator=true
+    node-scheduler.include-coordinator=true
+    http-server.http.port=8080
+    query.max-memory=4GB
+    query.max-memory-per-node=1GB
+    discovery.uri=http://localhost:8080
+    http-server.process-forwarded=true
+    retry-policy=QUERY
+    retry-initial-delay=3s
+    exchange.max-buffer-size=64MB
+    exchange.max-response-size=32MB
+    sink.max-buffer-size=64MB
+    web-ui.authentication.type=oauth2
+    internal-communication.shared-secret=kKn8KJLMv234
+    access-control.config-files=etc/opa.properties
+    http-server.authentication.type=password,oauth2
+    #http-server.authentication.oauth2.refresh-tokens=true
+    http-server.authentication.oauth2.client-id=trino-client
+    http-server.authentication.oauth2.client-secret=rZ2pLu13q6MhfjKMbCnRLOPhOgOZvG63
+    http-server.authentication.oauth2.issuer=https://keycloak.my.io/realms/trino
+    #http-server.authentication.oauth2.issuer=http://192.168.80.241:30210/realms/trino
+    #http-server.authentication.oauth2.token-url=http://192.168.80.241:30210/auth/realms/trino/protocol/openid-connect/token
+    #http-server.authentication.oauth2.authorization-url=http://192.168.80.241:30210/auth/realms/trino/protocol/openid-connect/auth
+    #http-server.authentication.oauth2.user-info-url=http://192.168.80.241:30210/auth/realms/trino/protocol/openid-connect/userinfo
+    http-server.authentication.oauth2.principal-field=preferred_username
+  exchange-manager.properties: |
+    exchange-manager.name=filesystem
+    exchange.base-directories=/tmp/trino-local-file-system-exchange-manager
+  group-mapping.properties: |
+    group_1:cracnro
+  group-provider.properties: |
+    group-provider.name=file
+    file.group-file=etc/group-mapping.properties
+  jvm.config: |
+    -server
+    -agentpath:/usr/lib/trino/bin/libjvmkill.so
+    -Xmx8G
+    -XX:+UseG1GC
+    -XX:G1HeapRegionSize=32M
+    -XX:+ExplicitGCInvokesConcurrent
+    -XX:+HeapDumpOnOutOfMemoryError
+    -XX:+ExitOnOutOfMemoryError
+    -XX:-OmitStackTraceInFastThrow
+    -XX:ReservedCodeCacheSize=512M
+    -XX:PerMethodRecompilationCutoff=10000
+    -XX:PerBytecodeRecompilationCutoff=10000
+    -Djdk.attach.allowAttachSelf=true
+    -Djdk.nio.maxCachedBufferSize=2000000
+    # Allow loading dynamic agent used by JOL
+    -XX:+EnableDynamicAgentLoading
+
+    # https://bugs.openjdk.org/browse/JDK-8329528
+    -XX:+UnlockDiagnosticVMOptions
+    -XX:G1NumCollectionsKeepPinned=10000000
+  log.properties: |
+    io.trino=INFO
+  node.properties: |
+    node.environment=production
+    node.data-dir=/data/trino
+    plugin.dir=/usr/lib/trino/plugin
+  opa.properties: |
+    access-control.name=opa
+    #opa.policy.uri=http://192.168.80.241:8181/v1/data/trino/allow
+    opa.policy.uri=http://192.168.80.241:8090/v1/api/opa/allow
+    opa.policy.row-filters-uri=http://192.168.80.241:8090/v1/api/opa/getRowFilters
+    #opa.policy.row-filters-uri=http://192.168.80.241:8181/v1/data/trino/rowFilters
+  password-authenticator.properties: |
+    password-authenticator.name=file
+    file.password-file=etc/password.db
+  password.db: |
+    cracnro:$2y$10$HcXjRm2nj3qsMTP1hxqvlefpSIcoh7bMHnpyySIEQX0Xj7wPAfud.
