@@ -1,0 +1,23 @@
+{
+  "input": {
+    "context": {
+      "identity": {
+        "user": "admin",
+        "groups": []
+      },
+      "softwareStack": {
+        "trinoVersion": "453"
+      }
+    },
+    "action": {
+      "operation": "GetRowFilters",
+      "resource": {
+        "table": {
+          "catalogName": "ice",
+          "schemaName": "information_schema",
+          "tableName": "schemata"
+        }
+      }
+    }
+  }
+}
