@@ -1,0 +1,18 @@
+CREATE TABLE hive.dwd.customer4 (
+         custkey bigint,
+         name varchar,
+         address varchar,
+         nationkey bigint,
+         phone varchar,
+         acctbal double,
+         mktsegment varchar,
+         comment varchar
+      )
+      WITH (
+         format = 'PARQUET',
+         external_location = 's3a://hive/warehouse/ods.db/customer-ca4a255a49ef4f41b7557391d436216f/data/20240713_140135_00008_2uzxm-fb517e75-6484-4622-9625-e9858d61d2b0.parquet'
+      );
+
+
+select "$path", a.* from hive.dwd.customer3 a;
+
